@@ -1,7 +1,7 @@
 from tkinter import *
 from ttkbootstrap import *
 from ttkbootstrap.constants import *
-from PIL import Image, ImageTk
+
 
 window = Tk()
 window.title('Password Manager')
