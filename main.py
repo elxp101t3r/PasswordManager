@@ -17,22 +17,22 @@ def save():
             'Password': p_t 
         }
         
-        Messagebox().show_info(title='Titlte', message=f'Saving\nLink:{l_text.get()}\nEmail:{e_text.get()}\nPassword:{p_text.get()}')
+        Messagebox().show_info(title='Save Details', message=f'Saving\nLink:{l_t}\nEmail:{e_t}\nPassword:{p_t}')
     
     
         try:
             df = pd.read_excel('password_manager.xlsx', engine='openpyxl')
         except FileNotFoundError:
             df = pd.DataFrame(columns=['Link', 'Email/Uname', 'Password'])
+        
+        new_row = pd.DataFrame(user_data, index=[len(df)+1])
+        df = pd.concat([df, new_row], ignore_index=True)
             
-            new_row = pd.DataFrame(user_data, index=[len(df)+1])
-            df = pd.concat([df, new_row], ignore_index=True)
+        with pd.ExcelWriter('password_manager.xlsx', engine='openpyxl', mode='w') as writer:
+            df.to_excel(writer, index=False)
             
-            with pd.ExcelWriter('password_manager.xlsx', engine='openpyxl', mode='w') as writer:
-                df.to_excel(writer, index=False)
-            
-            l_text.set('')
-            p_text.set('')
+        l_text.set('')
+        p_text.set('')
     elif l_text.get() == '' or e_text.get() == '' or p_text.get() == '':
         Messagebox.show_error(title='Error', message="Please fill out all fields.")
           
