@@ -6,29 +6,36 @@ import pandas as pd
 
 
 def save():
-    user_data = {
-        'Link': l_text.get(),
-        'Email/Uname': e_text.get(),
-        'Password': p_text.get()
-    }
+    if l_text.get() != '' and e_text.get() != '' and p_text.get() != '':
+        l_t = l_text.get()
+        e_t = e_text.get()
+        p_t = p_text.get()
     
-    
-    Messagebox().show_info(title='Titlte', message=f'Saving\nLink:{l_text.get()}\nEmail:{e_text.get()}\nPassword:{p_text.get()}')
-    
-    
-    try:
-        df = pd.read_excel('password_manager.xlsx', engine='openpyxl')
-    except FileNotFoundError:
-        df = pd.DataFrame(columns=['Link', 'Email/Uname', 'Password'])
+        user_data = {
+            'Link': l_t,
+            'Email/Uname': e_t,
+            'Password': p_t 
+        }
         
-        new_row = pd.DataFrame(user_data, index=[len(df)+1])
-        df = pd.concat([df, new_row], ignore_index=True)
-        
-        with pd.ExcelWriter('password_manager.xlsx', engine='openpyxl', mode='w') as writer:
-            df.to_excel(writer, index=False)
-        
-        l_text.set('')
-        p_text.set('')     
+        Messagebox().show_info(title='Titlte', message=f'Saving\nLink:{l_text.get()}\nEmail:{e_text.get()}\nPassword:{p_text.get()}')
+    
+    
+        try:
+            df = pd.read_excel('password_manager.xlsx', engine='openpyxl')
+        except FileNotFoundError:
+            df = pd.DataFrame(columns=['Link', 'Email/Uname', 'Password'])
+            
+            new_row = pd.DataFrame(user_data, index=[len(df)+1])
+            df = pd.concat([df, new_row], ignore_index=True)
+            
+            with pd.ExcelWriter('password_manager.xlsx', engine='openpyxl', mode='w') as writer:
+                df.to_excel(writer, index=False)
+            
+            l_text.set('')
+            p_text.set('')
+    elif l_text.get() == '' or e_text.get() == '' or p_text.get() == '':
+        Messagebox.show_error(title='Error', message="Please fill out all fields.")
+          
     l_text.set('')
     p_text.set('')
     
