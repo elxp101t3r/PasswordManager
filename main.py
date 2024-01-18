@@ -3,6 +3,7 @@ from ttkbootstrap import *
 from ttkbootstrap.constants import *
 from ttkbootstrap.dialogs.dialogs import Messagebox
 import pandas as pd
+from urllib.parse import urlparse
 from random import choice
 from string import ascii_letters, digits, punctuation
 
@@ -13,11 +14,25 @@ def save():
         e_t = e_text.get()
         p_t = p_text.get()
     
+        if not l_t.startswith('https'):
+            l_t = 'https://' + l_t
+        try:
+            result = urlparse(l_t)
+            if not all([result.scheme, result.netloc]):
+                Messagebox.show_error(title='Enter Valid Link', message='Please enter valid link.')
+                l_text.set('')
+                return
+        except ValueError:
+            Messagebox.show_error(title="Link", message='Please enter a valid link.')
+            return
+            
+            
         user_data = {
             'Link': l_t,
             'Email/Uname': e_t,
             'Password': p_t 
         }
+        
         
         Messagebox().show_info(title='Save Details', message=f'Saving\nLink:{l_t}\nEmail:{e_t}\nPassword:{p_t}')
     
@@ -36,7 +51,7 @@ def save():
         l_text.set('')
         p_text.set('')
     elif l_text.get() == '' or e_text.get() == '' or p_text.get() == '':
-        Messagebox.show_error(title='Error', message="Please fill out all fields.")
+        Messagebox.show_error(title='Fill Fields', message="Please fill out all fields.")
           
     l_text.set('')
     p_text.set('')
