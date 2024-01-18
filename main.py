@@ -4,7 +4,7 @@ from ttkbootstrap.constants import *
 from ttkbootstrap.dialogs.dialogs import Messagebox
 import pandas as pd
 from random import choice
-from string import printable
+from string import ascii_letters, digits, punctuation
 
 
 def save():
@@ -43,8 +43,9 @@ def save():
 
     
 def generate_password(): 
-    gen_pass = ''.join([choice(printable) for x in range(8) if choice(printable) != ''])
-       
+    alphabet = ascii_letters + digits + punctuation
+    p_text.set(''.join(choice(alphabet) for _ in range(12)))
+   
       
 window = Tk()
 window.title('Password Manager')
@@ -75,7 +76,7 @@ pass_label.grid(column=0, row=3)
 pass_text = Entry(textvariable=p_text,bootstyle='info', width=21)
 pass_text.grid(column=1, row=3)
 
-generate_btn = Button(text='Generate Password', bootstyle='danger-outline')
+generate_btn = Button(text='Generate Password', bootstyle='danger-outline', command=generate_password)
 generate_btn.grid(column=2, row=3)
 
 save_btn = Button(text='Save', bootstyle='success', width=36, command=save)
