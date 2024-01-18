@@ -4,7 +4,7 @@ from ttkbootstrap.constants import *
 from ttkbootstrap.dialogs.dialogs import Messagebox
 import pandas as pd
 from random import choice
-from string import ascii_lowercase, ascii_uppercase, printable
+from string import printable
 
 
 def save():
