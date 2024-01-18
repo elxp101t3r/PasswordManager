@@ -23,7 +23,6 @@ def save():
         df.to_excel(writer, index=False)
     
     l_text.set('')
-    e_text.set('')
     p_text.set('')
     
 
