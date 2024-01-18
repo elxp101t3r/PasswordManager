@@ -22,8 +22,15 @@ email_label.grid(column=0, row=2)
 email_text = Entry(bootstyle='warning', width=35)
 email_text.grid(column=1, row=2, columnspan=2, pady=10)
 
+pass_label = Label(text='Password', bootstyle='inverse-danger')
+pass_label.grid(column=0, row=3)
+pass_text = Entry(bootstyle='info', width=21)
+pass_text.grid(column=1, row=3)
 
+generate_btn = Button(text='Generate Password', bootstyle='danger-outline')
+generate_btn.grid(column=2, row=3)
 
-
+save_btn = Button(text='Save', bootstyle='success', width=36)
+save_btn.grid(column=1, row=4, columnspan=2, pady=10)
 
 window.mainloop()
