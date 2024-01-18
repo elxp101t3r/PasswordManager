@@ -3,6 +3,8 @@ from ttkbootstrap import *
 from ttkbootstrap.constants import *
 from ttkbootstrap.dialogs.dialogs import Messagebox
 import pandas as pd
+from random import choice
+from string import ascii_lowercase, ascii_uppercase, printable
 
 
 def save():
@@ -38,8 +40,12 @@ def save():
           
     l_text.set('')
     p_text.set('')
-    
 
+    
+def generate_password(): 
+    gen_pass = ''.join([choice(printable) for x in range(8) if choice(printable) != ''])
+       
+      
 window = Tk()
 window.title('Password Manager')
 window.config(padx=50, pady=50)
