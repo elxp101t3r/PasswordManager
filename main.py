@@ -6,13 +6,20 @@ import pandas as pd
 from urllib.parse import urlparse
 from random import choice
 from string import ascii_letters, digits, punctuation
-
+import json
 
 def save():
     if l_text.get() != '' and e_text.get() != '' and p_text.get() != '':
         l_t = l_text.get()
         e_t = e_text.get()
         p_t = p_text.get()
+        
+        new_data = {
+            'Link':{
+                'email': e_t,
+                'password': p_t
+            }
+        }
     
         if not l_t.startswith('https'):
             l_t = 'https://' + l_t
@@ -33,20 +40,19 @@ def save():
             'Password': p_t 
         }
         
-        
         Messagebox().show_info(title='Save Details', message=f'Saving\nLink:{l_t}\nEmail:{e_t}\nPassword:{p_t}')
     
     
         try:
-            df = pd.read_excel('password_manager.xlsx', engine='openpyxl')
+           with open("userData.json", "r") as f:
+               data = json.load(f)
         except FileNotFoundError:
-            df = pd.DataFrame(columns=['Link', 'Email/Uname', 'Password'])
+            data = []
         
-        new_row = pd.DataFrame(user_data, index=[len(df)+1])
-        df = pd.concat([df, new_row], ignore_index=True)
-            
-        with pd.ExcelWriter('password_manager.xlsx', engine='openpyxl', mode='w') as writer:
-            df.to_excel(writer, index=False)
+        data.append(user_data)
+        
+        with open('userData.json', 'w') as f:
+            json.dump(data, f, indent=4)
             
         l_text.set('')
         p_text.set('')
