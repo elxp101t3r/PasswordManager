@@ -15,7 +15,7 @@ def save():
         p_t = p_text.get()
         
         new_data = {
-            'Link':{
+            l_t:{
                 'email': e_t,
                 'password': p_t
             }
