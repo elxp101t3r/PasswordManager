@@ -8,6 +8,30 @@ from random import choice
 from string import ascii_letters, digits, punctuation
 import json
 
+
+def find_pass():
+    if l_text.get() != '':
+        link = l_text.get().strip()
+    try:
+        with open('userData.json', 'r') as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        Messagebox.show_error(title='Error', message='No saved data found.')
+        return
+
+    for entry in data:
+        if link in entry:
+            em = entry[link]['email']
+            ps = entry[link]['password']
+                
+            Messagebox().show_info(title=f'{link}', message=f'Email: {em}\nPassword: {ps}')
+            return
+
+    Messagebox.show_error(title='Error', message='No password found for this link.')
+    
+    
+
+
 def save():
     if l_text.get() != '' and e_text.get() != '' and p_text.get() != '':
         l_t = l_text.get()
@@ -32,13 +56,6 @@ def save():
         except ValueError:
             Messagebox.show_error(title="Link", message='Please enter a valid link.')
             return
-            
-            
-        user_data = {
-            'Link': l_t,
-            'Email/Uname': e_t,
-            'Password': p_t 
-        }
         
         Messagebox().show_info(title='Save Details', message=f'Saving\nLink:{l_t}\nEmail:{e_t}\nPassword:{p_t}')
     
@@ -49,7 +66,7 @@ def save():
         except FileNotFoundError:
             data = []
         
-        data.append(user_data)
+        data.append(new_data)
         
         with open('userData.json', 'w') as f:
             json.dump(data, f, indent=4)
@@ -84,8 +101,10 @@ p_text = StringVar()
 link_label = Label(text='Link', bootstyle='inverse-default')
 link_label.grid(column=0, row=1)
 link_text = Entry(textvariable=l_text,bootstyle='success', width=35)
-link_text.grid(column=1, row=1, columnspan=2, padx=10)
+link_text.grid(column=1, row=1, padx=1)
 link_text.focus()
+search_btn = Button(text='Search', bootstyle='warning-outline', width=15,command=find_pass)
+search_btn.grid(column=2, row=1)
 
 email_label = Label(text='Username or Email', bootstyle='inverse-success')
 email_label.grid(column=0, row=2)
@@ -94,10 +113,10 @@ email_text.grid(column=1, row=2, columnspan=2, pady=10)
 
 pass_label = Label(text='Password', bootstyle='inverse-danger')
 pass_label.grid(column=0, row=3)
-pass_text = Entry(textvariable=p_text,bootstyle='info', width=21)
+pass_text = Entry(textvariable=p_text,bootstyle='info', width=35)
 pass_text.grid(column=1, row=3)
 
-generate_btn = Button(text='Generate Password', bootstyle='danger-outline', command=generate_password)
+generate_btn = Button(text='Generate Password', bootstyle='danger-outline', command=generate_password, width=15)
 generate_btn.grid(column=2, row=3)
 
 save_btn = Button(text='Save', bootstyle='success', width=36, command=save)
